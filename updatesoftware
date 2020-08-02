@@ -7,7 +7,7 @@
 # Update software to new version
 dateupdated=$(date +"%Y-%m-%d")
 oldhash=$(git log -n1 --format=format:"%H")
-licensepath='/etc/pikonek/app/pytransform'
+licensepath='/etc/pikonek/pikonek/pikonek/pytransform'
 # Fetch the update
 cd ${1}
 if [ $? != 0 ]; then echo "Invalid path."; exit 1; fi

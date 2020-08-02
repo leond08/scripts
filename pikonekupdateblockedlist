@@ -1,11 +1,5 @@
 #!/bin/sh
-#
-# ABOUT
-# This is a simple autoupdate and whitelist script for the notracking blocklists.
-# notracking lists: https://github.com/notracking/hosts-blocklists
-# script source: https://github.com/notracking/hosts-blocklists-scripts
-#
-# HOWTO
+
 # For Debian based systems
 #  - Install curl: sudo apt install curl
 #  - Download this file to: /etc/cron.daily/notracking_update
@@ -21,7 +15,7 @@
 listdir=/etc/blocked
 ########################
 
-echo -n "[+] Downloading notracking updates: "
+echo -n "[+] Downloading updates: "
 curl --silent -k $listdir/adware https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt
 curl --silent -k $listdir/domains https://raw.githubusercontent.com/notracking/hosts-blocklists/master/domains.txt
 curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/fakenews
@@ -43,7 +37,7 @@ while IFS= read -r line; do # IFS= to prevent read from remove leading or tailin
     grep -v "${line}" $listdir/fakenews > $listdir/fakenews.tmp
     grep -v "${line}" $listdir/gambling > $listdir/gambling.tmp
     grep -v "${line}" $listdir/domains > $listdir/domains.tmp
-    grep -v "${line}" $listdir/piskonekblockedlist > $listdir/piskonekblockedlist.tmp
+    grep -v "${line}" $listdir/pisokonekblockedlist > $listdir/pisokonekblockedlist.tmp
 
     mv $listdir/adware.tmp $listdir/adware
     mv $listdir/porn.tmp $listdir/porn
@@ -51,7 +45,7 @@ while IFS= read -r line; do # IFS= to prevent read from remove leading or tailin
     mv $listdir/social.tmp $listdir/social
     mv $listdir/gambling.tmp $listdir/gambling
     mv $listdir/domains.tmp $listdir/domains
-    mv $listdir/piskonekblockedlist.tmp $listdir/piskonekblockedlist
+    mv $listdir/pisokonekblockedlist.tmp $listdir/pisokonekblockedlist
     
   fi
 done < $listdir/whitelist.list
