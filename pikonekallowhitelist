@@ -4,7 +4,7 @@
 # Allow whitelist sites
 #
 ######## CONFIG ########
-listdir=/etc/blocked
+listdir=/etc/pikonek/blocked
 ########################
 touch $listdir/whitelist.list # create empty whitelist in case it does not exist
 while IFS= read -r line; 

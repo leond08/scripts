@@ -12,7 +12,7 @@
 # Only rules that include a dot '.' will be used to avoid simple mistakes.
 #
 ######## CONFIG ########
-listdir=/etc/blocked
+listdir=/etc/pikonek/blocked
 ########################
 
 echo -n "[+] Downloading updates: "
