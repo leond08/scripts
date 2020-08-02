@@ -1,0 +1,63 @@
+#!/bin/sh
+
+# (c) Pisokonek
+# dev.pisokonek@gmail.com
+
+# Usage ./update.sh <path_of_app> 0
+# Update software to new version
+dateupdated=$(date +"%Y-%m-%d")
+oldhash=$(git log -n1 --format=format:"%H")
+licensepath='/etc/pikonek/app/pytransform'
+# Fetch the update
+cd ${1}
+if [ $? != 0 ]; then echo "Invalid path."; exit 1; fi
+# create a directory for our license file
+if [ "${2}" = 0 ];
+then
+	if [ -d "/etc/licenses" ]; 
+	then 
+		cp -a ${licensepath}/license.lic /etc/licenses/
+	else
+		mkdir -p /etc/licenses
+		cp -a ${licensepath}/license.lic /etc/licenses/
+	fi
+fi
+
+# git fetch origin master
+git checkout .
+# clean tracked files
+git clean -d -f
+git pull
+if [ $? != 0 ]; 
+then 
+	echo "Source fetch failed." && exit 1; 
+else
+	# releasehash=$(grep -oPi '(?<=\"hash\": )[^ ]*' release.json | sed 's/\"//g') # Get the hash
+	# version=$(grep -oPi '(?<=\"version\": )[^ ]*' release.json | sed 's/\"//g') # Get the version
+	fetchedhash=$(git log -n1 --format=format:"%H")
+	# compare the hash 
+	if [ "${fetchedhash}" != "${oldhash}" ];
+	then
+		(\
+			echo "{"; \
+			# echo  -e  "\"version\": \"${version}\","; \
+			echo  -e  "\"date_updated\": \"${dateupdated}\","; \
+			echo  -e  "\"hash\": \"${fetchedhash}\""; \
+			echo "}"; \
+		) > .history;
+		if [ "${2}" = 0 ];
+		then
+			echo "Copying back the license from licenses..."
+			cp -a /etc/licenses/license.lic ${licensepath}
+		fi
+		echo "Software updated."
+	else 
+		if [ "${2}" = 0 ];
+		then
+			echo "Copying back the license from licenses..."
+			cp -a /etc/licenses/license.lic ${licensepath}
+		fi
+		echo "Software is up to date.";
+		exit 1;
+	fi
+fi

@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# ABOUT
+# This is a simple autoupdate and whitelist script for the notracking blocklists.
+# notracking lists: https://github.com/notracking/hosts-blocklists
+# script source: https://github.com/notracking/hosts-blocklists-scripts
+#
+# HOWTO
+# For Debian based systems
+#  - Install curl: sudo apt install curl
+#  - Download this file to: /etc/cron.daily/notracking_update
+#  - Mark it as executable: sudo chmod +x /etc/cron.daily/notracking_update
+#  - Update the CONFIG section in this script: sudo nano /etc/cron.daily/notracking_update
+#  - Do a test run: sudo /etc/cron.daily/notracking_update
+#
+# WHITELISTING
+# Any line in the blocklist that contains one of the lines in the whitelist will be automatically removed.
+# Only rules that include a dot '.' will be used to avoid simple mistakes.
+#
+######## CONFIG ########
+listdir=/etc/blocked
+########################
+
+echo -n "[+] Downloading notracking updates: "
+curl --silent -k $listdir/adware https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt
+curl --silent -k $listdir/domains https://raw.githubusercontent.com/notracking/hosts-blocklists/master/domains.txt
+curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/fakenews
+curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/gambling
+curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/social
+curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/porn
+echo "OK!"
+
+echo -n "[+] Applying whitelist: "
+touch $listdir/whitelist.list # create empty whitelist in case it does not exist
+while IFS= read -r line; do # IFS= to prevent read from remove leading or tailing spaces
+  if [[ $line == *"."* ]] # line must at least contain a '.' to avoid simple mistakes
+  then
+    line="${line%%[[:cntrl:]]}" # removes tailing newline
+
+    grep -v "${line}" $listdir/adware > $listdir/adware.tmp
+    grep -v "${line}" $listdir/porn > $listdir/porn.tmp
+    grep -v "${line}" $listdir/social > $listdir/social.tmp
+    grep -v "${line}" $listdir/fakenews > $listdir/fakenews.tmp
+    grep -v "${line}" $listdir/gambling > $listdir/gambling.tmp
+    grep -v "${line}" $listdir/domains > $listdir/domains.tmp
+    grep -v "${line}" $listdir/piskonekblockedlist > $listdir/piskonekblockedlist.tmp
+
+    mv $listdir/adware.tmp $listdir/adware
+    mv $listdir/porn.tmp $listdir/porn
+    mv $listdir/fakenews.tmp $listdir/fakenews
+    mv $listdir/social.tmp $listdir/social
+    mv $listdir/gambling.tmp $listdir/gambling
+    mv $listdir/domains.tmp $listdir/domains
+    mv $listdir/piskonekblockedlist.tmp $listdir/piskonekblockedlist
+    
+  fi
+done < $listdir/whitelist.list
+echo "OK!"
+
+echo -n "[+] Restarting Dnsmasq: "
+/etc/init.d/dnsmasq restart
+echo "OK!"
