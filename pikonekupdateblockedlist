@@ -17,10 +17,6 @@ listdir=/etc/pikonek/blocked
 
 echo -n "[+] Downloading updates: "
 curl --silent -k $listdir/adware https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt
-curl --silent -k $listdir/domains https://raw.githubusercontent.com/notracking/hosts-blocklists/master/domains.txt
-curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/fakenews
-curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/gambling
-curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/social
 curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/porn
 echo "OK!"
 
@@ -33,18 +29,10 @@ while IFS= read -r line; do # IFS= to prevent read from remove leading or tailin
 
     grep -v "${line}" $listdir/adware > $listdir/adware.tmp
     grep -v "${line}" $listdir/porn > $listdir/porn.tmp
-    grep -v "${line}" $listdir/social > $listdir/social.tmp
-    grep -v "${line}" $listdir/fakenews > $listdir/fakenews.tmp
-    grep -v "${line}" $listdir/gambling > $listdir/gambling.tmp
-    grep -v "${line}" $listdir/domains > $listdir/domains.tmp
     grep -v "${line}" $listdir/pisokonekblockedlist > $listdir/pisokonekblockedlist.tmp
 
     mv $listdir/adware.tmp $listdir/adware
     mv $listdir/porn.tmp $listdir/porn
-    mv $listdir/fakenews.tmp $listdir/fakenews
-    mv $listdir/social.tmp $listdir/social
-    mv $listdir/gambling.tmp $listdir/gambling
-    mv $listdir/domains.tmp $listdir/domains
     mv $listdir/pisokonekblockedlist.tmp $listdir/pisokonekblockedlist
     
   fi

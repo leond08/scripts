@@ -11,19 +11,11 @@ while IFS= read -r line;
 do # IFS= to prevent read from remove leading or tailing spaces
     grep -v "${line}" $listdir/adware > $listdir/adware.tmp
     grep -v "${line}" $listdir/porn > $listdir/porn.tmp
-    grep -v "${line}" $listdir/social > $listdir/social.tmp
-    grep -v "${line}" $listdir/fakenews > $listdir/fakenews.tmp
-    grep -v "${line}" $listdir/gambling > $listdir/gambling.tmp
-    grep -v "${line}" $listdir/domains > $listdir/domains.tmp
     grep -v "${line}" $listdir/pisokonekblockedlist > $listdir/pisokonekblockedlist.tmp
     grep -v "${line}" $listdir/blocked.list > $listdir/blocked.list.tmp
 
     mv $listdir/adware.tmp $listdir/adware
     mv $listdir/porn.tmp $listdir/porn
-    mv $listdir/fakenews.tmp $listdir/fakenews
-    mv $listdir/social.tmp $listdir/social
-    mv $listdir/gambling.tmp $listdir/gambling
-    mv $listdir/domains.tmp $listdir/domains
     mv $listdir/pisokonekblockedlist.tmp $listdir/pisokonekblockedlist
     mv $listdir/blocked.list.tmp $listdir/blocked.list
 done < "$listdir/whitelist.list"
