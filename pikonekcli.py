@@ -48,20 +48,21 @@ def main(argv=sys.argv):
     configure_logger(False, False)
 
     if opts.password:
-        logging.info("Generating new password...")
+        logging.info("Saving new password...")
         response = Admin.change_password(password=opts.password)
-        if not response:
+        if response == 1:
+            logging.info("Error on saving new password...")
             return 1
     if opts.dhcp:
         logging.info("Configuring dhcp server, dnsmasq...")
         response = DhcpConfig.configure(config_file=opts.dhcp)
-        if not response:
+        if response == 1:
             logging.error("Error configuring dhcp server...")
             return 1
     if opts.network:
         logging.info("Configuring network interfaces...")
         response = NetConfig.configure(config_file=opts.network, activate=False)
-        if not response:
+        if response == 1:
             logging.error("Error configuring network interfaces...")
             return 1
 
