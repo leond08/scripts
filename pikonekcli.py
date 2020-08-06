@@ -6,7 +6,7 @@ import os
 import sys
 import yaml
 
-sys.path.append(os.path.abspath(os.path.join('../pikonek', '')))
+sys.path.append('/etc/pikonek/pikonek/')
 
 from pikonek.netconfig import main as NetConfig
 from pikonek.dhcp import main as DhcpConfig
