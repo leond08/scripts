@@ -52,18 +52,21 @@ def main(argv=sys.argv):
         response = Admin.change_password(password=opts.password)
         if response == 1:
             logging.info("Error on saving new password...")
+            print('Error on saving new password.')
             return 1
     if opts.dhcp:
         logging.info("Configuring dhcp server, dnsmasq...")
         response = DhcpConfig.configure(config_file=opts.dhcp)
         if response == 1:
             logging.error("Error configuring dhcp server...")
+            print('Error configuring dhcp server.')
             return 1
     if opts.network:
         logging.info("Configuring network interfaces...")
         response = NetConfig.configure(config_file=opts.network, activate=False)
         if response == 1:
             logging.error("Error configuring network interfaces...")
+            print('Error configuring network interfaces.')
             return 1
 
     return 0
