@@ -2,7 +2,7 @@
 	# su #
 	daily
 	copytruncate
-	rotate 5
+	rotate 1
 	compress
 	delaycompress
 	notifempty
@@ -13,7 +13,7 @@
 	# su #
 	daily
 	copytruncate
-	rotate 5
+	rotate 1
 	compress
 	delaycompress
 	notifempty
