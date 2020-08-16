@@ -44,10 +44,10 @@ FILTER=""
 
 if [ "$START_DARKSTAT" = "no" ] ; then
   log_warning_msg "please change the value of START_DARKSTAT in $INIT, in order to start darkstat"
-  exit 0
+  exit 1
 fi
 
-test "$START_DARKSTAT" = "yes" || exit 0
+test "$START_DARKSTAT" = "yes" || exit 1
 
 case "$1" in
 start)

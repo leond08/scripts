@@ -34,7 +34,7 @@ ARGS="/etc/ntopng.conf"
 if [ "$START_NTOPNG" = "no" ] ; then
   log_warning_msg "please change the value of START_NTOPNG in $INIT, in order to start ntopng"
   ntop_stop
-  exit 0
+  exit 1
 fi
 
 
