@@ -33,7 +33,8 @@ test -x $DAEMON || exit 0
 . $INIT
 
 if [ "$START_BANDWIDTHD" = "no" ] ; then
-  log_warning_msg "please change the value of START_BANDWIDTHD in $INIT, in order to start ntopng"
+  log_warning_msg "please change the value of START_BANDWIDTHD in $INIT, in order to start bandwidthd"
+  stopd
   exit 0
 fi
 
