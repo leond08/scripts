@@ -19,7 +19,7 @@ LOGDIR="/var/log/ntopng"
 SCRIPTNAME=/etc/init.d/$NAME
 PIDFILE=/var/tmp/ntopng.pid
 INTERFACES=""
-INIT="/etc/pikonek/configs/pikonekInit.cfg"
+INIT=/etc/pikonek/configs/pikonekInit.cfg
 
 test -f $DAEMON || exit 0
 
