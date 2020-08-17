@@ -12,11 +12,13 @@ from pikonek.netconfig import main as NetConfig
 from pikonek.wireless import main as WirelessConfig
 from pikonek.dhcp import main as DhcpConfig
 from pikonek.admin import main as Admin
+from pikonek.core import main as CoreConfig
 
 logger = logging.getLogger(__name__)
 _PIKONEK_NET_MAP_FILE =  '/etc/pikonek/configs/pikonek_net_mapping.yaml'
 _PIKONEK_DHCP_FILE =  '/etc/pikonek/configs/pikonek_dhcp_mapping.yaml'
 _PIKONEK_WPA_FILE =  '/etc/pikonek/configs/pikonek_wpa_mapping.yaml'
+_PIKONEK_CORE_FILE = '/etc/pikonek/configs/pikonek.yaml'
 
 def parse_opts(argv):
     parser = argparse.ArgumentParser(
@@ -26,6 +28,7 @@ def parse_opts(argv):
     parser.add_argument('-d', '--dhcp', metavar='DHCP CONFIG FILE')
     parser.add_argument('-n', '--network', metavar='NETWORK CONFIG FILE')
     parser.add_argument('-w', '--wpa', metavar='WPA CONFIG FILE')
+    parser.add_argument('-c', '--core', metavar='CORE CONFIG FILE')
 
     opts = parser.parse_args(argv[1:])
 
@@ -53,31 +56,32 @@ def main(argv=sys.argv):
         logging.info("Saving new password...")
         response = Admin.change_password(password=opts.password)
         if response == 1:
-            logging.info("Error on saving new password...")
-            print('Error on saving new password.')
+            logging.info("Error on saving new password.")
             return 1
     if opts.dhcp:
         logging.info("Configuring dhcp server, dnsmasq...")
         response = DhcpConfig.configure(config_file=opts.dhcp, activate=False)
         if response == 1:
-            logging.error("Error configuring dhcp server...")
-            print('Error configuring dhcp server.')
+            logging.error("Error configuring dhcp server.")
             return 1
     if opts.network:
         logging.info("Configuring network interfaces...")
         response = NetConfig.configure(config_file=opts.network, activate=False)
         if response == 1:
-            logging.error("Error configuring network interfaces...")
-            print('Error configuring network interfaces.')
+            logging.error("Error configuring network interfaces.")
             return 1
     if opts.wpa:
         logging.info("Configuring wpa config...")
         response = WirelessConfig.configure(config_file=opts.wpa, activate=False)
         if response == 1:
-            logging.error("Error configuring wpa config...")
-            print('Error configuring wpa config.')
+            logging.error("Error configuring wpa config.")
             return 1
-
+    if opts.core:
+        logging.info("Configuring pikonek core...")
+        response = CoreConfig.configure(config_file=opts.core, activate=True)
+        if response == 1:
+            logging.error("Error configuring core config.")
+            return 1
     return 0
 
 
