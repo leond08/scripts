@@ -1,12 +1,4 @@
 #!/bin/sh
-
-# For Debian based systems
-#  - Install curl: sudo apt install curl
-#  - Download this file to: /etc/cron.daily/notracking_update
-#  - Mark it as executable: sudo chmod +x /etc/cron.daily/notracking_update
-#  - Update the CONFIG section in this script: sudo nano /etc/cron.daily/notracking_update
-#  - Do a test run: sudo /etc/cron.daily/notracking_update
-#
 # WHITELISTING
 # Any line in the blocklist that contains one of the lines in the whitelist will be automatically removed.
 # Only rules that include a dot '.' will be used to avoid simple mistakes.
@@ -16,7 +8,7 @@ listdir=/etc/pikonek/blocked
 ########################
 
 echo -n "[+] Downloading updates: "
-curl --silent -k $listdir/adware https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt
+curl -k https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt -o $listdir/adware 
 curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/porn
 echo "OK!"
 
