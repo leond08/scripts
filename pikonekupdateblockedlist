@@ -8,7 +8,7 @@ listdir=/etc/pikonek/blocked
 ########################
 
 echo -n "[+] Downloading updates: "
-curl -k https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt -o $listdir/adware 
+curl --silent -k https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt -o $listdir/adware 
 curl --silent -k https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts | awk '$1 == "0.0.0.0" { print "0.0.0.0 "$2}' > $listdir/porn
 echo "OK!"
 
