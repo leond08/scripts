@@ -32,7 +32,7 @@ test -x $DAEMON || exit 0
 
 . $INIT
 
-if [ "$START_BANDWIDTHD" = "no" ] ; then
+if [ "$START_BANDWIDTHD" = "False" ] ; then
   log_warning_msg "please change the value of START_BANDWIDTHD in $INIT, in order to start bandwidthd"
   exit 1
 fi

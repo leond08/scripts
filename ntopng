@@ -31,7 +31,7 @@ ARGS="/etc/ntopng.conf"
 
 . $INIT
 
-if [ "$START_NTOPNG" = "no" ] ; then
+if [ "$START_NTOPNG" = "False" ] ; then
   log_warning_msg "please change the value of START_NTOPNG in $INIT, in order to start ntopng"
   exit 1
 fi
