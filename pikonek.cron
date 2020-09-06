@@ -3,9 +3,9 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-# Save ipset every 10 minutes
+# Save ipset every 5 minutes
 #
-*/10 *  * * *  root /usr/sbin/ipset save > /etc/pikonek/ipset.rules
+*/5 *  * * *  root /usr/sbin/ipset save > /etc/pikonek/ipset.rules
 # Restore
 @reboot root /usr/sbin/ipset restore < /etc/pikonek/ipset.rules
 # Save iptables every 10 minutes
