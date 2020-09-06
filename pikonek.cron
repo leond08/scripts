@@ -2,11 +2,15 @@
 #
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NICS=$(ip --oneline link show | grep -v lo | awk '{print $2}' | cut -d':' -f1 | cut -d'@' -f1)
 
 # Save ipset every 5 minutes
 #
 */5 *  * * *  root /usr/sbin/ipset save > /etc/pikonek/ipset.rules
 # Restore
 @reboot root /usr/sbin/ipset restore < /etc/pikonek/ipset.rules
-# Save iptables every 10 minutes
+# Save iptables every 5 minutes
 */5 *  * * *  root /usr/sbin/iptables-save > /etc/iptables/rules.v4
+# Save traffic shaping
+*/1 *  * * * root /usr/local/bin/tcshow $NICS > /etc/pikonek/tcconfig.json
+@reboot root /usr/local/bin/tcset /etc/pikonek/tcconfig.json --import-setting
