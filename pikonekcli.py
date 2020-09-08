@@ -14,12 +14,13 @@ from pikonek.dhcp import main as DhcpConfig
 from pikonek.admin import main as Admin
 from pikonek.core import main as CoreConfig
 from pikonek.captive import main as CaptiveConfig
+from pikonek.config import Config
 
 logger = logging.getLogger(__name__)
-_PIKONEK_NET_MAP_FILE =  '/etc/pikonek/configs/pikonek_net_mapping.yaml'
-_PIKONEK_DHCP_FILE =  '/etc/pikonek/configs/pikonek_dhcp_mapping.yaml'
-_PIKONEK_WPA_FILE =  '/etc/pikonek/configs/pikonek_wpa_mapping.yaml'
-_PIKONEK_CORE_FILE = '/etc/pikonek/configs/pikonek.yaml'
+_PIKONEK_NET_MAP_FILE =  '{}pikonek_net_mapping.yaml'.format(Config.PIKONEK_CONFIG_PATH)
+_PIKONEK_DHCP_FILE =  '{}pikonek_dhcp_mapping.yaml'.format(Config.PIKONEK_CONFIG_PATH)
+_PIKONEK_WPA_FILE =  '{}pikonek_wpa_mapping.yaml'.format(Config.PIKONEK_CONFIG_PATH)
+_PIKONEK_CORE_FILE = '{}pikonek.yaml'.format(Config.PIKONEK_CONFIG_PATH)
 
 def parse_opts(argv):
     parser = argparse.ArgumentParser(
