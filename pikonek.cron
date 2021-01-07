@@ -11,5 +11,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 # Save iptables every 5 minutes
 */5 *  * * *  root /usr/sbin/iptables-save > /etc/iptables/rules.v4
 # Save traffic shaping
-*/1 *  * * * root /etc/pikonek/scripts/tcsave.sh
+*/5 *  * * * root /etc/pikonek/scripts/tcsave.sh
 @reboot root /usr/local/bin/tcset /etc/pikonek/tcconfig.json --import-setting
+# Check qouta
+*/15 *  * * * root /usr/bin/python3 /etc/pikonek/packages/captive/bandwidth.py
