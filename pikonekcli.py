@@ -11,6 +11,7 @@ sys.path.append('/etc/pikonek/pikonek/')
 from pikonek.netconfig import main as NetConfig
 from pikonek.wireless import main as WirelessConfig
 from pikonek.dhcp import main as DhcpConfig
+from pikonek.client import main as Client
 from pikonek.admin import main as Admin
 from pikonek.core import main as CoreConfig
 from pikonek.captive import main as CaptiveConfig
@@ -32,6 +33,7 @@ def parse_opts(argv):
     parser.add_argument('-w', '--wpa', metavar='WPA CONFIG FILE')
     parser.add_argument('-c', '--core', metavar='CORE CONFIG FILE')
     parser.add_argument('-r', '--rule', metavar='CAPTIVE FIREWALL RULE')
+    parser.add_argument('-x', '--connect', metavar='RECONNECT CLIENT')
 
     opts = parser.parse_args(argv[1:])
 
@@ -89,6 +91,13 @@ def main(argv=sys.argv):
         try:
             logging.info("Adding captive firewall rule...")
             CaptiveConfig.configure(config_file=opts.rule)
+        except Exception as e:
+            logging.error(e)
+            return 1
+    if opts.connect:
+        try:
+            logging.info("Re-connecting client...")
+            Client.connect_client(mac=opts.connect)
         except Exception as e:
             logging.error(e)
             return 1
