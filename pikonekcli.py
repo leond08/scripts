@@ -96,7 +96,6 @@ def main(argv=sys.argv):
             return 1
     if opts.connect:
         try:
-            logging.info("Re-connecting client...")
             Client.connect_client(mac=opts.connect)
         except Exception as e:
             logging.error(e)
