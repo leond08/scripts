@@ -17,3 +17,4 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 */15 *  * * * root /usr/bin/python3 /etc/pikonek/packages/captive/bandwidth.py
 # Check services if running
 */5 *  * * * root /usr/bin/bash /etc/pikonek/scripts/check_services.sh
+@reboot root /usr/bin/timedatectl set-timezone "Asia/Manila"
