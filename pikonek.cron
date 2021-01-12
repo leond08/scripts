@@ -5,13 +5,15 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # Save ipset every 5 minutes
 #
-*/5 *  * * *  root /usr/sbin/ipset save > /etc/pikonek/ipset.rules
+*/10 *  * * *  root /usr/sbin/ipset save > /etc/pikonek/ipset.rules
 # Restore
 @reboot root /usr/sbin/ipset restore < /etc/pikonek/ipset.rules
 # Save iptables every 5 minutes
-*/5 *  * * *  root /usr/sbin/iptables-save -c > /etc/iptables/rules.v4
+*/6 *  * * *  root /usr/sbin/iptables-save -c > /etc/iptables/rules.v4
 # Save traffic shaping
-*/5 *  * * * root /etc/pikonek/scripts/tcsave.sh
+*/20 *  * * * root /etc/pikonek/scripts/tcsave.sh
 @reboot root /usr/local/bin/tcset /etc/pikonek/tcconfig.json --import-setting
 # Check qouta
 */15 *  * * * root /usr/bin/python3 /etc/pikonek/packages/captive/bandwidth.py
+# Check services if running
+*/5 *  * * * root /usr/bin/bash /etc/pikonek/scripts/check_services.sh
