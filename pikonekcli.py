@@ -33,7 +33,7 @@ def parse_opts(argv):
     parser.add_argument('-w', '--wpa', metavar='WPA CONFIG FILE')
     parser.add_argument('-c', '--core', metavar='CORE CONFIG FILE')
     parser.add_argument('-r', '--rule', metavar='CAPTIVE FIREWALL RULE')
-    parser.add_argument('-x', '--connect', metavar='RECONNECT CLIENT')
+    parser.add_argument('-x', '--connect', dest='connect', action='append', metavar='RECONNECT CLIENT')
 
     opts = parser.parse_args(argv[1:])
 
@@ -96,7 +96,7 @@ def main(argv=sys.argv):
             return 1
     if opts.connect:
         try:
-            Client.connect_client(mac=opts.connect)
+            Client.connect_client(mac=opts.connect[0], ip=opts.connect[1])
         except Exception as e:
             logging.error(e)
             return 1
