@@ -8,6 +8,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 */10 *  * * *  root /usr/sbin/ipset save > /etc/pikonek/ipset.rules
 # Restore
 @reboot root /usr/sbin/ipset restore < /etc/pikonek/ipset.rules
+# Restore iptables at reboot 
+@reboot root /usr/sbin/iptables-restore -c > /etc/iptables/rules.v4
 # Save iptables every 5 minutes
 # */6 *  * * *  root /usr/sbin/iptables-save -c > /etc/iptables/rules.v4
 # Save traffic shaping
