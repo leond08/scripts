@@ -22,45 +22,16 @@ fi
 load_rules()
 {
     #load IPv4 rules
-    if [ ! -f /etc/iptables/rules.v4 ]; then
+    if [ ! -f /etc/pikonek/rules.v4 ]; then
         echo "Warning: skipping IPv4 (no rules to load)"
     else
-        iptables-restore -c < /etc/iptables/rules.v4
+        iptables-restore -c < /etc/pikonek/rules.v4
     fi
-}
-
-save_rules()
-{
-    if [ ! "${IPTABLES_SKIP_SAVE}x" = "yesx" ]; then
-        touch /etc/iptables/rules.v4
-        chmod 0640 /etc/iptables/rules.v4
-        iptables-save -c > /etc/iptables/rules.v4
-    fi
-}
-
-flush_rules()
-{
-    TABLES=$(iptables-save | sed -E -n 's/^\*//p')
-    for table in $TABLES
-    do
-        CHAINS=$(iptables-save -t $table | sed -E -n 's/^:([A-Z]+).*/\1/p')
-        for chain in $CHAINS
-        do
-            # policy can't be set on user-defined chains
-            iptables -t $table -P $chain ACCEPT || true
-        done
-        iptables -t $table -F
-        iptables -t $table -Z
-        iptables -t $table -X
-    done
 }
 
 case "$1" in
 start|restart|reload|force-reload)
     load_rules
-    ;;
-save)
-    save_rules
     ;;
 stop)
     # Why? because if stop is used, the firewall gets flushed for a variable
@@ -68,11 +39,8 @@ stop)
     # It's also not always desirable to flush during purge
     echo "Automatic flushing disabled, use \"flush\" instead of \"stop\""
     ;;
-flush)
-    flush_rules
-    ;;
 *)
-    echo "Usage: $0 {start|restart|reload|force-reload|save|flush}" >&2
+    echo "Usage: $0 {start|restart|reload|force-reload}" >&2
     exit 1
     ;;
 esac
