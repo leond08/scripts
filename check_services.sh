@@ -44,16 +44,6 @@ else
   PIKONEKCAPTIVE_ACTIVE=false
 fi
 
-if check_service_active "S70pikonekcaptivefw" ; then
-  PIKONEKCAPTIVEFW_ACTIVE=true
-else
-  PIKONEKCAPTIVEFW_ACTIVE=false
-fi
-
 if [[ "${PIKONEKCAPTIVE_ACTIVE}" == false ]]; then
   restart_service S70pikonekcaptive
-fi
-
-if [[ "${PIKONEKCAPTIVEFW_ACTIVE}" == false ]]; then
-  restart_service S70pikonekcaptivefw
 fi
